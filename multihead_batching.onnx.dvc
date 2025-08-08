@@ -1,5 +1,0 @@
-outs:
-- md5: ed0bffc73734ae3d9fe0172e6dd5c379
-  size: 21740920
-  hash: md5
-  path: multihead_batching.onnx

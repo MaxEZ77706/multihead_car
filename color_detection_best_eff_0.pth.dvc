@@ -1,5 +1,0 @@
-outs:
-- md5: d6f282586a2c05d479edc140d4c62fbd
-  size: 16361362
-  hash: md5
-  path: color_detection_best_eff_0.pth

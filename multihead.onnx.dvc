@@ -1,5 +1,0 @@
-outs:
-- md5: 5bac0b8ead35331bf12dc6e3d8f1f6d6
-  size: 11921181
-  hash: md5
-  path: multihead.onnx

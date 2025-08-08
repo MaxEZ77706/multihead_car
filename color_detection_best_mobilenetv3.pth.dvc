@@ -1,5 +1,0 @@
-outs:
-- md5: 8a33db85804b6c80622cf7c63b4f5780
-  size: 17047066
-  hash: md5
-  path: color_detection_best_mobilenetv3.pth

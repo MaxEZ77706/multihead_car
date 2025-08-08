@@ -1,21 +1,21 @@
-# Базовый образ
+# Main code
 FROM python:3.10-slim
 
-# Установка системных зависимостей
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-# Установка Python-библиотек (одной командой без лишних переносов)
+# Install Python dependencies (in one command without extra line breaks)
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir torch==2.2.2 torchvision==0.17.2 "numpy<2" onnxruntime opencv-python-headless ultralytics
 
-# Создание рабочей директории
+# Set working directory
 WORKDIR /app
 
-# Копируем весь проект
+# Copy the entire project into the container
 COPY . /app
 
-# Запуск скрипта
+# Run the script
 CMD ["python", "main2.py"]
