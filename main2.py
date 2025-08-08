@@ -4,13 +4,20 @@ import numpy as np
 import time
 import onnxruntime as ort
 from ultralytics import YOLO
+import multiprocessing
+
+# === PERFORMANCE BOOST ===
+cv2.setNumThreads(0)
+torch.set_num_threads(min(8, multiprocessing.cpu_count()))  # ⬅️ Ускорение на CPU
+torch.backends.cudnn.benchmark = True
 
 # === LOAD YOLO DETECTOR ===
 object_detector = YOLO("yolov8n.pt")
 
-# === LOAD ONNX MODELS (без providers) ===
-brand_sess = ort.InferenceSession("brand_model.onnx")
-color_sess = ort.InferenceSession("color_model.onnx")
+# === LOAD ONNX MODELS with providers ===
+providers = ["CPUExecutionProvider"]
+brand_sess = ort.InferenceSession("brand_model.onnx", providers=providers)
+color_sess = ort.InferenceSession("color_model.onnx", providers=providers)
 
 # === LABELS ===
 brand_classes = ["Motorcycle", "SUV", "Sedan", "Truck", "Van"]
@@ -33,13 +40,12 @@ out = cv2.VideoWriter('output_fast_416.mp4', fourcc, fps, (target_width, target_
 frame_id = 0
 total_elapsed = 0
 start_global = time.time()
-
 while cap.isOpened():
     start_time = time.time()
     success, frame = cap.read()
     if not success:
         break
-    
+
     frame_id += 1
     frame = cv2.resize(frame, (target_width, target_height))
     results = object_detector(frame, conf=0.6, imgsz=416)
@@ -83,11 +89,10 @@ cap.release()
 out.release()
 cv2.destroyAllWindows()
 
-print("🎉 Done: output_fast_416.mp4 saved.")
+print("🎉 Done: output_fast_416(onnx).mp4 saved.")
 
 avg_time_per_frame = total_elapsed / frame_id
 avg_fps = frame_id / total_elapsed
-
 print("\n🕒 Processing finished.")
 print(f"🧮 Total frames: {frame_id}")
 print(f"⏱️ Total time: {total_elapsed:.2f} seconds")
