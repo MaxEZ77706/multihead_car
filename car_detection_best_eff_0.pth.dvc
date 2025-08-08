@@ -1,0 +1,5 @@
+outs:
+- md5: 80cf3249d42e455fbc1a77d8e332e8ac
+  size: 16360634
+  hash: md5
+  path: car_detection_best_eff_0.pth

@@ -1,0 +1,5 @@
+outs:
+- md5: 931d8b578b7708839b8b0779eeadb898
+  size: 17046434
+  hash: md5
+  path: car_detection_best_mobilenetv3.pth

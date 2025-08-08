@@ -1,0 +1,5 @@
+outs:
+- md5: 74a87af1ff77c0d7051161fa02fc98d6
+  size: 16829100
+  hash: md5
+  path: brand_model.onnx
