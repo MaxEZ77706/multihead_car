@@ -1,4 +1,4 @@
-# batch-inference ONNX модели c imgsz
+# batch-inference ONNX модели c imgsz WARMUP
 
 import cv2
 import numpy as np
@@ -9,7 +9,7 @@ import multiprocessing
 import torch
 
 # === PERFORMANCE BOOST ===
-cv2.setNumThreads(0)
+cv2.setNumThreads(0)  # Отключаем многопоточность OpenCV для лучшей производительности
 torch.set_num_threads(min(8, multiprocessing.cpu_count()))
 torch.backends.cudnn.benchmark = True
 
@@ -22,9 +22,13 @@ mean = np.array([0.485, 0.456, 0.406]).reshape(3, 1, 1)
 std = np.array([0.229, 0.224, 0.225]).reshape(3, 1, 1)
 
 # === Load ONNX Multihead Model ===
-providers = ["CPUExecutionProvider"]  # or "CoreMLExecutionProvider" if available
-multihead_sess = ort.InferenceSession("multihead_batching.onnx", providers=providers)
+providers = ["CPUExecutionProvider"]
+multihead_sess = ort.InferenceSession("multihead_batching1.onnx", providers=providers)
 input_name = multihead_sess.get_inputs()[0].name
+
+# === Warmup ONNX Multihead Model ===
+dummy = np.random.randn(1, 3, 224, 224).astype(np.float32)
+_ = multihead_sess.run(None, {input_name: dummy})
 
 # === Load YOLOv8 Detector ===
 object_detector = YOLO("yolov8n.pt")
@@ -49,7 +53,8 @@ while cap.isOpened():
     frame = cv2.resize(frame, (width, height))
 
     # === YOLO DETECTION ===
-    results = object_detector(frame, conf=0.4, imgsz=224)
+    with torch.inference_mode():
+        results = object_detector(frame, conf=0.4, imgsz=224)
     boxes = results[0].boxes.xyxy.int().tolist()
 
     crops, coords = [], []
@@ -80,19 +85,13 @@ while cap.isOpened():
 
     out.write(frame)
 
-    # === Show Preview ===
-    preview = cv2.resize(frame, None, fx=0.6, fy=0.6)
-    cv2.imshow("Real-time Detection", preview)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
     elapsed = time.time() - start_time
     print(f"✅ Frame {frame_id} in {elapsed:.2f}s | ⚡ {1 / elapsed:.2f} FPS")
 
 # === RELEASE ===
 cap.release()
 out.release()
-cv2.destroyAllWindows()
+
 
 # === FINAL STATS ===
 total_elapsed = time.time() - total_start_time
