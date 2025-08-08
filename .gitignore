@@ -1,3 +1,5 @@
 /my_cars1.mp4
 /car_detection_best_eff_0.pth
 /color_detection_best_eff_0.pth
+/car_detection_best_mobilenetv3.pth
+/color_detection_best_mobilenetv3.pth
