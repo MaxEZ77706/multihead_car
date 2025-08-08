@@ -3,3 +3,5 @@
 /color_detection_best_eff_0.pth
 /car_detection_best_mobilenetv3.pth
 /color_detection_best_mobilenetv3.pth
+/brand_model.onnx
+/color_model.onnx

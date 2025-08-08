@@ -1,0 +1,5 @@
+outs:
+- md5: dedce6b10e8a21a5691397ebcf482010
+  size: 16829100
+  hash: md5
+  path: color_model.onnx
