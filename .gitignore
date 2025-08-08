@@ -7,3 +7,4 @@
 /color_model.onnx
 /multihead.onnx
 /multihead_batching.onnx
+/MultiLabel
