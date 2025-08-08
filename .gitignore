@@ -5,3 +5,4 @@
 /color_detection_best_mobilenetv3.pth
 /brand_model.onnx
 /color_model.onnx
+/multihead.onnx
