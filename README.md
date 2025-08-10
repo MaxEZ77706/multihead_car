@@ -30,7 +30,7 @@ The project supports **PyTorch training**, **ONNX inference**, and **Docker depl
 
 - ## 📦 Installation
 1. Clone the repository:  
-git clone https://github.com/yourusername/multihead-car.git
+git clone https://github.com/MaxEZ77706/multihead-car.git
 cd multihead-car-classification
 
 pip install -r requirements.txt
